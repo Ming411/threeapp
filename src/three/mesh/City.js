@@ -2,7 +2,8 @@ import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
 import scene from '../scene';
 import modifyCityMaterial from '../modify/modifyCityMaterial';
-import FlyLine from './FlyLine';
+// import FlyLine from './FlyLine';
+import FlyLine from './FlyLine_c.ts';
 import FlyLineShader from './FlyLineShader';
 import MeshLine from './MeshLine';
 import LightWall from './LightWall';
@@ -30,5 +31,9 @@ export default function createCity() {
       }
     });
     scene.add(gltf.scene);
+
+    // 添加飞线
+    const flyLine = new FlyLine();
+    scene.add(flyLine.mesh);
   });
 }

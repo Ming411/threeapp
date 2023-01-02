@@ -95,7 +95,7 @@ export function addSpread(shader, center = new THREE.Vector2(0, 0)) {
     //  扩散范围的函数
     float spreadIndex = -(spreadRadius-uSpreadTime)*(spreadRadius-uSpreadTime)+uSpreadWidth;
     if(spreadIndex>0.0){
-        gl_FragColor = mix(gl_FragColor,vec4(1,1,1,1),spreadIndex/uSpreadWidth);
+      gl_FragColor = mix(gl_FragColor,vec4(1,1,1,1),spreadIndex/uSpreadWidth);
     }
     //#end#
     `
@@ -151,10 +151,10 @@ export function addToTopLine(shader) {
   shader.fragmentShader = shader.fragmentShader.replace(
     '#include <common>',
     `
-          #include <common>
-          uniform float uToTopTime;
-          uniform float uToTopWidth;
-          `
+      #include <common>
+      uniform float uToTopTime;
+      uniform float uToTopWidth;
+      `
   );
   shader.fragmentShader = shader.fragmentShader.replace(
     '//#end#',
