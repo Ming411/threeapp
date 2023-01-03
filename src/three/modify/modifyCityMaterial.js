@@ -69,7 +69,7 @@ export function addGradColor(shader, mesh) {
       `
   );
 }
-// 雷达效果
+// 光圈扩散效果
 export function addSpread(shader, center = new THREE.Vector2(0, 0)) {
   // 设置扩散的中心点
   shader.uniforms.uSpreadCenter = {value: center};

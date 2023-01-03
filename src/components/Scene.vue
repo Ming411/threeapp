@@ -2,9 +2,9 @@
   <div class="scene" ref="sceneDiv"></div>
 </template>
 
-<script setup>
-import {onMounted, ref, watch} from 'vue';
-import * as THREE from 'three';
+<script lang="ts" setup>
+import {onMounted, ref} from 'vue';
+// import * as THREE from 'three';
 // import gsap from 'gsap';
 // 导入gui对象
 // import gui from '@/three/gui';
@@ -27,7 +27,7 @@ import animate from '@/three/animate';
 
 const props = defineProps(['eventList']);
 // 场景元素div
-let sceneDiv = ref(null);
+let sceneDiv = ref<HTMLElement>();
 // 添加相机
 scene.add(camera);
 // 添加辅助坐标轴
@@ -36,7 +36,7 @@ scene.add(axesHelper);
 createMesh();
 
 onMounted(() => {
-  sceneDiv.value.appendChild(renderer.domElement);
+  sceneDiv.value!.appendChild(renderer.domElement);
   animate();
 });
 </script>
