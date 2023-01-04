@@ -1,8 +1,9 @@
 import * as THREE from 'three';
+import type {Box3, Material, Mesh, Shader} from 'three';
 import gsap from 'gsap';
-export default function modifyCityMaterial(mesh) {
+export default function modifyCityMaterial(mesh: Mesh) {
   // 材质编译之前的钩子函数
-  mesh.material.onBeforeCompile = shader => {
+  (mesh.material as Material).onBeforeCompile = (shader: Shader) => {
     // console.log(shader.vertexShader);
     // console.log(shader.fragmentShader);
     shader.fragmentShader = shader.fragmentShader.replace(
@@ -20,11 +21,11 @@ export default function modifyCityMaterial(mesh) {
 }
 
 // shader建筑物渐变色
-export function addGradColor(shader, mesh) {
+export function addGradColor(shader: Shader, mesh: Mesh) {
   // 计算当前几何体的的边界矩形，该操作会更新已有 [param:.boundingBox]
   mesh.geometry.computeBoundingBox();
   // console.log(mesh.geometry.boundingBox);
-  let {min, max} = mesh.geometry.boundingBox;
+  let {min, max} = mesh.geometry.boundingBox as Box3;
   //   获取物体的高度差
   let uHeight = max.y - min.y;
   shader.uniforms.uTopColor = {
@@ -70,7 +71,7 @@ export function addGradColor(shader, mesh) {
   );
 }
 // 光圈扩散效果
-export function addSpread(shader, center = new THREE.Vector2(0, 0)) {
+export function addSpread(shader: Shader, center = new THREE.Vector2(0, 0)) {
   // 设置扩散的中心点
   shader.uniforms.uSpreadCenter = {value: center};
   //   扩散的时间
@@ -109,7 +110,7 @@ export function addSpread(shader, center = new THREE.Vector2(0, 0)) {
   });
 }
 // 光线横扫效果
-export function addLightLine(shader) {
+export function addLightLine(shader: Shader) {
   //   扩散的时间
   shader.uniforms.uLightLineTime = {value: -1500};
   //   设置条带的宽度
@@ -142,7 +143,7 @@ export function addLightLine(shader) {
   });
 }
 // 整体闪烁效果
-export function addToTopLine(shader) {
+export function addToTopLine(shader: Shader) {
   //   扩散的时间
   shader.uniforms.uToTopTime = {value: 0};
   //   设置条带的宽度

@@ -6,19 +6,36 @@ interface CMouseEvent extends MouseEvent {
   alarm?: any;
 }
 
+type TextureType = Record<string, string>;
+
 export default class AlarmSprite {
   material: SpriteMaterial;
   mesh: Sprite;
   fns: any[];
   raycaster: Raycaster;
   mouse: Vector2;
-  constructor() {
+  constructor(
+    type: string = '火警',
+    position: {x: number; z: number} = {x: -1.8, z: 3},
+    color: number | string = 0xffffff
+  ) {
     const textureLoader = new THREE.TextureLoader();
-    const map = textureLoader.load('./textures/warning.png');
-    this.material = new THREE.SpriteMaterial({map: map});
+    const typeObj: TextureType = {
+      火警: './textures/tag/fire.png',
+      治安: './textures/tag/jingcha.png',
+      电力: './textures/tag/e.png'
+    };
+    const map = textureLoader.load(typeObj[type]);
+    this.material = new THREE.SpriteMaterial({
+      map: map,
+      color: color,
+      // blending: THREE.AdditiveBlending, // 混合场景其他建筑颜色
+      transparent: true,
+      depthTest: false // 关闭深度检测
+    });
     // 精灵是一个总是面朝着摄像机的平面，通常含有使用一个半透明的纹理。
     this.mesh = new THREE.Sprite(this.material);
-    this.mesh.position.set(-4.2, 3.5, -1);
+    this.mesh.position.set(position.x, 3.5, position.z);
     this.fns = [];
     // 创建射线
     this.raycaster = new THREE.Raycaster();
@@ -40,5 +57,12 @@ export default class AlarmSprite {
   }
   onClick(fn: any) {
     this.fns.push(fn);
+  }
+  // 移除的方法
+  remove() {
+    this.mesh.remove();
+    this.mesh.removeFromParent();
+    this.mesh.geometry.dispose();
+    this.mesh.material.dispose();
   }
 }

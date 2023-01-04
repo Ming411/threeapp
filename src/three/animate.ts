@@ -1,11 +1,11 @@
-import * as THREE from "three";
-import camera from "./camera";
-import renderer from "./renderer";
-import controls from "./controls";
-import scene from "./scene";
+import * as THREE from 'three';
+import camera from './camera';
+import renderer from './renderer';
+import controls from './controls';
+import scene from './scene';
 
 const clock = new THREE.Clock();
-function animate(t) {
+function animate() {
   controls.update();
   const time = clock.getElapsedTime();
   requestAnimationFrame(animate);

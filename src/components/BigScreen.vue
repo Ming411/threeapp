@@ -1,17 +1,15 @@
 <template>
   <div id="bigScreen">
-    <div class="header">老陈智慧城市管理系统平台</div>
+    <div class="header">{{ props.title }}</div>
     <div class="main">
       <div class="left">
-        <div class="cityEvent" v-for="(item, key) in props.dataInfo">
-          <h3>
-            <span>{{ item.name }}</span>
-          </h3>
+        <div class="cityEvent" v-for="(item, index) in props.dataInfo" :key="index">
+          <h3>{{ item.name }}</h3>
           <h1>
             <img src="../assets/bg/bar.svg" class="icon" />
-            <span>{{ toFixInt(item.number) }}（{{ item.unit }}）</span>
+            <span>{{ toFixInt(item.number) }} （{{ item.unit }}）</span>
           </h1>
-          <div class="footerBoder"></div>
+          <div class="footerBorder"></div>
         </div>
       </div>
       <div class="right">
@@ -20,17 +18,13 @@
             <span>事件列表</span>
           </h3>
           <ul>
-            <li
-              v-for="(item, i) in props.eventList"
-              :class="{ active: currentActive == i }"
-              @click="toggleEvent(i)"
-            >
+            <li v-for="(item, index) in props.eventList" :key="index">
               <h1>
                 <div>
-                  <img class="icon" :src="imgs[item.name]" />
-                  <span> {{ item.name }} </span>
+                  <img :src="imgs[item.name]" class="icon" />
+                  <span>{{ item.name }}</span>
                 </div>
-                <span class="time"> {{ item.time }} </span>
+                <span class="time">2023-01-01</span>
               </h1>
               <p>{{ item.type }}</p>
             </li>
@@ -41,29 +35,28 @@
   </div>
 </template>
 
-<script setup>
-import eventHub from "@/utils/eventHub";
-import { ref } from "vue";
-const props = defineProps(["dataInfo", "eventList"]);
-const imgs = {
-  电力: require("@/assets/bg/dianli.svg"),
-  火警: require("@/assets/bg/fire.svg"),
-  治安: require("@/assets/bg/jingcha.svg"),
-};
+<script setup lang="ts">
+import type {DataInfo, EventList} from '@/views/types';
+const props = withDefaults(
+  defineProps<{
+    dataInfo: DataInfo;
+    title?: string;
+    eventList: EventList;
+  }>(),
+  {
+    title: '智慧管理系统'
+  }
+);
 
-const toFixInt = (num) => {
-  return num.toFixed(0);
-};
-
-const currentActive = ref(null);
-eventHub.on("spriteClick", (data) => {
-  // console.log(data);
-  currentActive.value = data.i;
-});
-
-const toggleEvent = (i) => {
-  currentActive.value = i;
-  eventHub.emit("eventToggle", i);
+const toFixInt = (num: number) => num.toFixed(0);
+type stringKey = Record<string, any>;
+const imgs: stringKey = {
+  // 电力: require('@/assets/bg/dianli.svg'),
+  // 火警: require('@/assets/bg/fire.svg'),
+  // 治安: require('@/assets/bg/jingcha.svg')
+  电力: new URL(`@/assets/bg/dianli.svg`, import.meta.url).href,
+  火警: new URL(`@/assets/bg/fire.svg`, import.meta.url).href,
+  治安: new URL(`@/assets/bg/jingcha.svg`, import.meta.url).href
 };
 </script>
 
@@ -87,6 +80,7 @@ const toggleEvent = (i) => {
 
   width: 19.2rem;
   height: 1rem;
+  line-height: 1rem;
   background-image: url(@/assets/bg/title.png);
   background-size: cover;
   background-position: center;
@@ -136,6 +130,7 @@ const toggleEvent = (i) => {
   margin-bottom: 0.5rem;
   background-image: url(@/assets/bg/bg_img03.png);
   background-repeat: repeat;
+  pointer-events: all;
 }
 
 .cityEvent::before {
@@ -146,7 +141,7 @@ const toggleEvent = (i) => {
   top: 0;
   border-top: 4px solid rgb(34, 133, 247);
   border-left: 4px solid rgb(34, 133, 247);
-  content: "";
+  content: '';
   display: block;
 }
 
@@ -158,7 +153,7 @@ const toggleEvent = (i) => {
   top: 0;
   border-top: 4px solid rgb(34, 133, 247);
   border-right: 4px solid rgb(34, 133, 247);
-  content: "";
+  content: '';
   display: block;
 }
 .footerBorder {
@@ -176,7 +171,7 @@ const toggleEvent = (i) => {
   top: 0;
   border-bottom: 4px solid rgb(34, 133, 247);
   border-left: 4px solid rgb(34, 133, 247);
-  content: "";
+  content: '';
   display: block;
 }
 
@@ -188,7 +183,7 @@ const toggleEvent = (i) => {
   top: 0;
   border-bottom: 4px solid rgb(34, 133, 247);
   border-right: 4px solid rgb(34, 133, 247);
-  content: "";
+  content: '';
   display: block;
 }
 
