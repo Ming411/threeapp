@@ -43,7 +43,7 @@ onMounted(() => {
 	setInterval(() => {
 		changeInfo();
 		getEventList();
-	}, 5000);
+	}, 15000);
 });
 
 // 获取左侧信息列表

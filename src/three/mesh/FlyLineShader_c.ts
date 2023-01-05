@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import type { CatmullRomCurve3, BufferGeometry, ShaderMaterial, Points } from 'three';
+import type { CatmullRomCurve3, BufferGeometry, ShaderMaterial, Points, Material } from 'three';
 import gsap from 'gsap';
 import vertex from '@/shader/flyLine_c/vertex.glsl';
 import fragment from '@/shader/flyLine_c/fragment.glsl';
@@ -8,8 +8,13 @@ export default class FlyLineShader {
 	geometry: BufferGeometry;
 	shaderMaterial: ShaderMaterial;
 	mesh: Points;
-	constructor() {
-		const linePoints = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(-5, 4, 0), new THREE.Vector3(-10, 0, 0)];
+	eventListIndex?: number;
+	constructor(position: { x: number; z: number }, color: string | number = 0xffff00) {
+		const linePoints = [
+			new THREE.Vector3(0, 0, 0), // 固定从某点飞出
+			new THREE.Vector3(position.x / 2, 4, position.z / 2),
+			new THREE.Vector3(position.x, 0, position.z),
+		];
 		// 创建曲线
 		this.lineCurve = new THREE.CatmullRomCurve3(linePoints);
 		const points = this.lineCurve.getPoints(1000);
@@ -28,7 +33,7 @@ export default class FlyLineShader {
 					value: 0,
 				},
 				uColor: {
-					value: new THREE.Color(0x00ffff),
+					value: new THREE.Color(color),
 				},
 				uLength: {
 					value: points.length,
@@ -49,5 +54,11 @@ export default class FlyLineShader {
 			duration: 2,
 			ease: 'none',
 		});
+	}
+	remove() {
+		this.mesh.remove();
+		this.mesh.removeFromParent();
+		this.mesh.geometry.dispose();
+		(this.mesh.material as Material).dispose();
 	}
 }

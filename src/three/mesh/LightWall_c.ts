@@ -7,6 +7,7 @@ export default class LightWall {
 	geometry: CylinderGeometry;
 	material: ShaderMaterial;
 	mesh: Mesh;
+	eventListIndex?: number;
 	constructor(radius = 5, length = 2, position: { x: number; z: number } = { x: 0, z: 0 }, color: string | number = 0xff0000) {
 		// 上半径 下半径 高度 宽份数 高份数 是否开放
 		this.geometry = new THREE.CylinderGeometry(radius, radius, 2, 32, 1, true);

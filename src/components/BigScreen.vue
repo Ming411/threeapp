@@ -18,7 +18,7 @@
 						<span>事件列表</span>
 					</h3>
 					<ul>
-						<li v-for="(item, index) in props.eventList" :key="index">
+						<li v-for="(item, index) in props.eventList" :key="index" :class="{ active: currentActive === index }" @click="toggleEvent(index)">
 							<h1>
 								<div>
 									<img :src="imgs[item.name]" class="icon" />
@@ -37,6 +37,8 @@
 
 <script setup lang="ts">
 import type { DataInfo, EventList } from '@/views/types';
+import eventHub from '@/utils/eventHub';
+import { ref } from 'vue';
 const props = withDefaults(
 	defineProps<{
 		dataInfo: DataInfo;
@@ -57,6 +59,18 @@ const imgs: stringKey = {
 	电力: new URL(`@/assets/bg/dianli.svg`, import.meta.url).href,
 	火警: new URL(`@/assets/bg/fire.svg`, import.meta.url).href,
 	治安: new URL(`@/assets/bg/jingcha.svg`, import.meta.url).href,
+};
+
+const currentActive = ref<number>();
+// 接收地图点击
+eventHub.on('spriteClick', (data) => {
+	// console.log(data);
+	currentActive.value = data.i;
+});
+// 点击DOM给地图传递事件
+const toggleEvent = (i: number) => {
+	currentActive.value = i;
+	eventHub.emit('eventToggle', i);
 };
 </script>
 
@@ -237,6 +251,7 @@ h1 span.time {
 
 ul,
 li {
+	padding: 0;
 	list-style: none;
 }
 </style>

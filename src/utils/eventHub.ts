@@ -3,7 +3,14 @@
 // export default eventHub;
 
 import mitt from 'mitt';
-const eventHub = mitt();
+type Events = {
+	spriteClick: {
+		event: any;
+		i: number;
+	};
+	eventToggle: number;
+};
+const eventHub = mitt<Events>();
 export default eventHub;
 // ==========================
 // type Events = {

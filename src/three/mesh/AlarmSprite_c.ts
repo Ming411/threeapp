@@ -14,6 +14,7 @@ export default class AlarmSprite {
 	fns: any[];
 	raycaster: Raycaster;
 	mouse: Vector2;
+	eventListIndex?: number;
 	constructor(type = '火警', position: { x: number; z: number } = { x: -1.8, z: 3 }, color: number | string = 0xffffff) {
 		const textureLoader = new THREE.TextureLoader();
 		const typeObj: TextureType = {
