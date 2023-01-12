@@ -3,11 +3,19 @@
 		<div class="header">{{ props.title }}</div>
 		<div class="main">
 			<div class="left">
-				<div v-for="(item, index) in props.dataInfo" :key="index" class="cityEvent">
-					<h3>{{ item.name }}</h3>
-					<h1>
+				<div class="cityEvent">
+					<h3>开启热气球动画</h3>
+					<h1 @click="toggleAction(0)">
 						<img src="../assets/bg/bar.svg" class="icon" />
-						<span>{{ toFixInt(item.number) }} （{{ item.unit }}）</span>
+						<span>横穿园区动画</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h3>开启热气球动画</h3>
+					<h1 @click="toggleAction(1)">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>环绕园区动画</span>
 					</h1>
 					<div class="footerBorder"></div>
 				</div>
@@ -18,15 +26,15 @@
 						<span>事件列表</span>
 					</h3>
 					<ul>
-						<li v-for="(item, index) in props.eventList" :key="index" :class="{ active: currentActive === index }" @click="toggleEvent(index)">
+						<li>
 							<h1>
 								<div>
-									<img :src="imgs[item.name]" class="icon" />
-									<span>{{ item.name }}</span>
+									<!-- <img :src="imgs[item.name]" class="icon" /> -->
+									<!-- <span>{{ item.name }}</span> -->
 								</div>
 								<span class="time">2023-01-01</span>
 							</h1>
-							<p>{{ item.type }}</p>
+							<!-- <p>{{ item.type }}</p> -->
 						</li>
 					</ul>
 				</div>
@@ -41,36 +49,15 @@ import eventHub from '@/utils/eventHub';
 import { ref } from 'vue';
 const props = withDefaults(
 	defineProps<{
-		dataInfo: DataInfo;
 		title?: string;
-		eventList: EventList;
 	}>(),
 	{
 		title: '智慧管理系统',
 	}
 );
 
-const toFixInt = (num: number) => num.toFixed(0);
-type stringKey = Record<string, any>;
-const imgs: stringKey = {
-	// 电力: require('@/assets/bg/dianli.svg'),
-	// 火警: require('@/assets/bg/fire.svg'),
-	// 治安: require('@/assets/bg/jingcha.svg')
-	电力: new URL(`@/assets/bg/dianli.svg`, import.meta.url).href,
-	火警: new URL(`@/assets/bg/fire.svg`, import.meta.url).href,
-	治安: new URL(`@/assets/bg/jingcha.svg`, import.meta.url).href,
-};
-
-const currentActive = ref<number>();
-// 接收地图点击
-eventHub.on('spriteClick', (data) => {
-	// console.log(data);
-	currentActive.value = data.i;
-});
-// 点击DOM给地图传递事件
-const toggleEvent = (i: number) => {
-	currentActive.value = i;
-	eventHub.emit('eventToggle', i);
+const toggleAction = (i: number) => {
+	eventHub.emit('actionClick', i);
 };
 </script>
 
@@ -144,7 +131,8 @@ const toggleEvent = (i: number) => {
 	margin-bottom: 0.5rem;
 	background-image: url(@/assets/bg/bg_img03.png);
 	background-repeat: repeat;
-	pointer-events: all;
+	pointer-events: auto;
+	cursor: pointer;
 }
 
 .cityEvent::before {

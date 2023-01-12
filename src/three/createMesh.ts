@@ -1,5 +1,8 @@
-import createCity from './mesh/City';
-
+import City from './mesh/City';
+let city: City;
 export default function createMesh() {
-	createCity();
+	city = new City();
+}
+export function updateMesh(time: number) {
+	city.update(time);
 }

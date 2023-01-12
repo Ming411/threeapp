@@ -4,11 +4,7 @@
 
 import mitt from 'mitt';
 type Events = {
-	spriteClick: {
-		event: any;
-		i: number;
-	};
-	eventToggle: number;
+	actionClick: number;
 };
 const eventHub = mitt<Events>();
 export default eventHub;
