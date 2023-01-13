@@ -9,13 +9,21 @@
 						<img src="../assets/bg/bar.svg" class="icon" />
 						<span>横穿园区动画</span>
 					</h1>
-					<div class="footerBorder"></div>
-				</div>
-				<div class="cityEvent">
-					<h3>开启热气球动画</h3>
 					<h1 @click="toggleAction(1)">
 						<img src="../assets/bg/bar.svg" class="icon" />
 						<span>环绕园区动画</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h3>相机切换</h3>
+					<h1 @click="toggleCamera('carcamera_Orientation')">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>相机追随汽车</span>
+					</h1>
+					<h1 @click="toggleCamera('rightcamera_Orientation')">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>查看汽车司机视角</span>
 					</h1>
 					<div class="footerBorder"></div>
 				</div>
@@ -58,6 +66,9 @@ const props = withDefaults(
 
 const toggleAction = (i: number) => {
 	eventHub.emit('actionClick', i);
+};
+const toggleCamera = (name: string) => {
+	eventHub.emit('toggleCamera', name);
 };
 </script>
 

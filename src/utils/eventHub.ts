@@ -5,6 +5,7 @@
 import mitt from 'mitt';
 type Events = {
 	actionClick: number;
+	toggleCamera: string;
 };
 const eventHub = mitt<Events>();
 export default eventHub;

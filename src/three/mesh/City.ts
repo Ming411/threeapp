@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import type { Object3D, AnimationMixer, AnimationClip, AnimationAction, CatmullRomCurve3 } from 'three';
 import scene from '../scene';
 import eventHub from '@/utils/eventHub';
+import cameraModule from '../camera';
 export default class City {
 	mixer?: AnimationMixer;
 	clip?: AnimationClip;
@@ -24,6 +25,8 @@ export default class City {
 		gltfLoader.load('./model/city4.glb', (gltf) => {
 			// console.log(gltf);
 			this.gltf = gltf;
+			scene.add(gltf.scene);
+
 			gltf.scene.traverse((child) => {
 				if (child.name === '热气球') {
 					this.mixer = new THREE.AnimationMixer(child);
@@ -54,7 +57,10 @@ export default class City {
 					this.redcar = child;
 				}
 			});
-			scene.add(gltf.scene);
+
+			gltf.cameras.forEach((camera: any) => {
+				cameraModule.add(camera.name, camera);
+			});
 		});
 
 		eventHub.on('actionClick', (i) => {
