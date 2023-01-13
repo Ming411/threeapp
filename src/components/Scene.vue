@@ -11,7 +11,7 @@ import gsap from 'gsap';
 // 导入场景
 import scene from '@/three/scene';
 // 导入相机
-import camera from '@/three/camera';
+import cameraModule from '@/three/camera';
 // 导入控制器
 // import controls from '@/three/controls';
 // 导入辅助坐标轴
@@ -30,7 +30,7 @@ import eventHub from '@/utils/eventHub';
 // 场景元素div
 let sceneDiv = ref<HTMLElement>();
 // 添加相机
-scene.add(camera);
+scene.add(cameraModule.activeCamera);
 // 添加辅助坐标轴
 scene.add(axesHelper);
 // 创建物体 city.js
