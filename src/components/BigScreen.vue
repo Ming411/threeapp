@@ -31,18 +31,32 @@
 			<div class="right">
 				<div class="cityEvent list">
 					<h3>
-						<span>事件列表</span>
+						<span>切换园区观览模式</span>
 					</h3>
 					<ul>
-						<li>
+						<li @click="toggleControls('Orbit')">
 							<h1>
 								<div>
-									<!-- <img :src="imgs[item.name]" class="icon" /> -->
-									<!-- <span>{{ item.name }}</span> -->
+									<img src="../assets/bg/dianli.svg" class="icon" />
 								</div>
-								<span class="time">2023-01-01</span>
+								<span class="time">使用轨道控制器查看园区</span>
 							</h1>
-							<!-- <p>{{ item.type }}</p> -->
+						</li>
+						<li @click="toggleControls('Fly')">
+							<h1>
+								<div>
+									<img src="../assets/bg/dianli.svg" class="icon" />
+								</div>
+								<span class="time">使用飞行控制器查看园区</span>
+							</h1>
+						</li>
+						<li @click="toggleControls('FirstPerson')">
+							<h1>
+								<div>
+									<img src="../assets/bg/dianli.svg" class="icon" />
+								</div>
+								<span class="time">使用第一人称控制器查看园区</span>
+							</h1>
 						</li>
 					</ul>
 				</div>
@@ -69,6 +83,10 @@ const toggleAction = (i: number) => {
 };
 const toggleCamera = (name: string) => {
 	eventHub.emit('toggleCamera', name);
+};
+
+const toggleControls = (type: string) => {
+	eventHub.emit('toggleControls', type);
 };
 </script>
 
