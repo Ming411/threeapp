@@ -4,5 +4,5 @@ export default function createMesh() {
 	city = new City();
 }
 export function updateMesh(time: number) {
-	city.update(time);
+	// city.update(time);
 }

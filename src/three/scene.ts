@@ -12,7 +12,7 @@ const scene = new THREE.Scene();
 
 // 导入HDR纹理
 const hdrLoader = new RGBELoader();
-hdrLoader.loadAsync('./textures/023.hdr').then((texture) => {
+hdrLoader.loadAsync('./textures/2k.hdr').then((texture) => {
 	scene.background = texture;
 	scene.environment = texture;
 	scene.environment.mapping = THREE.EquirectangularReflectionMapping;

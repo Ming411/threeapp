@@ -1,5 +1,5 @@
 import cameraModule from './camera';
-import renderer from './renderer';
+import rendererModule from './renderer';
 
 // 更新摄像头
 cameraModule.activeCamera.aspect = window.innerWidth / window.innerHeight;
@@ -15,7 +15,10 @@ window.addEventListener('resize', () => {
 	cameraModule.activeCamera.updateProjectionMatrix();
 
 	//   更新渲染器
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	rendererModule.renderer.setSize(window.innerWidth, window.innerHeight);
 	//   设置渲染器的像素比例
-	renderer.setPixelRatio(window.devicePixelRatio);
+	rendererModule.renderer.setPixelRatio(window.devicePixelRatio);
+
+	/* ============ */
+	rendererModule.css3drender.setSize(window.innerWidth, window.innerHeight);
 });

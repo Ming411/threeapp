@@ -17,7 +17,7 @@ import cameraModule from '@/three/camera';
 // 导入辅助坐标轴
 import axesHelper from '@/three/axesHelper';
 // 导入渲染器
-import renderer from '@/three/renderer';
+import rendererModule from '@/three/renderer';
 // 初始化调整屏幕
 import '@/three/init';
 // 导入添加物体函数
@@ -37,7 +37,7 @@ scene.add(axesHelper);
 createMesh();
 
 onMounted(() => {
-	(sceneDiv.value as HTMLElement).appendChild(renderer.domElement);
+	(sceneDiv.value as HTMLElement).appendChild(rendererModule.renderer.domElement);
 	animate();
 });
 </script>
