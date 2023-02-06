@@ -5,7 +5,7 @@ import eventHub from '@/utils/eventHub';
 const camera = new THREE.PerspectiveCamera(75, window.innerHeight / window.innerHeight, 1, 10000);
 // 设置相机位置
 // object3d具有position，属性是1个3维的向量
-camera.position.set(100, 100, 100);
+camera.position.set(100, 100, 300);
 
 // 动态相机
 class CameraModule {
@@ -16,9 +16,9 @@ class CameraModule {
 		this.collection = {
 			default: camera,
 		};
-		eventHub.on('toggleCamera', (name) => {
-			this.setActive(name);
-		});
+		// eventHub.on('toggleCamera', (name) => {
+		// 	this.setActive(name);
+		// });
 	}
 	add(name: string, camera: any) {
 		this.collection[name] = camera;

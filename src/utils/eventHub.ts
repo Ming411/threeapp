@@ -4,9 +4,13 @@
 
 import mitt from 'mitt';
 type Events = {
-	actionClick: number;
-	toggleCamera: string;
-	toggleControls: string;
+	showFloor1: any;
+	showFloor2: any;
+	showWall: any;
+	showAll: any;
+	hideAll: any;
+	flatFlight: any;
+	recoverFlight: any;
 };
 const eventHub = mitt<Events>();
 export default eventHub;

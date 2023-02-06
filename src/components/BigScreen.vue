@@ -4,61 +4,48 @@
 		<div class="main">
 			<div class="left">
 				<div class="cityEvent">
-					<h3>开启热气球动画</h3>
-					<h1 @click="toggleAction(0)">
+					<h1 @click="showAll">
 						<img src="../assets/bg/bar.svg" class="icon" />
-						<span>横穿园区动画</span>
-					</h1>
-					<h1 @click="toggleAction(1)">
-						<img src="../assets/bg/bar.svg" class="icon" />
-						<span>环绕园区动画</span>
+						<span>厂房分层展开</span>
 					</h1>
 					<div class="footerBorder"></div>
 				</div>
 				<div class="cityEvent">
-					<h3>相机切换</h3>
-					<h1 @click="toggleCamera('carcamera_Orientation')">
+					<h1 @click="showWall">
 						<img src="../assets/bg/bar.svg" class="icon" />
-						<span>相机追随汽车</span>
+						<span>厂房外形展示</span>
 					</h1>
-					<h1 @click="toggleCamera('rightcamera_Orientation')">
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h1 @click="showFloor1">
 						<img src="../assets/bg/bar.svg" class="icon" />
-						<span>查看汽车司机视角</span>
+						<span>展示第一层楼</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h1 @click="showFloor2">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>展示第二层楼</span>
 					</h1>
 					<div class="footerBorder"></div>
 				</div>
 			</div>
 			<div class="right">
-				<div class="cityEvent list">
-					<h3>
-						<span>切换园区观览模式</span>
-					</h3>
-					<ul>
-						<li @click="toggleControls('Orbit')">
-							<h1>
-								<div>
-									<img src="../assets/bg/dianli.svg" class="icon" />
-								</div>
-								<span class="time">使用轨道控制器查看园区</span>
-							</h1>
-						</li>
-						<li @click="toggleControls('Fly')">
-							<h1>
-								<div>
-									<img src="../assets/bg/dianli.svg" class="icon" />
-								</div>
-								<span class="time">使用飞行控制器查看园区</span>
-							</h1>
-						</li>
-						<li @click="toggleControls('FirstPerson')">
-							<h1>
-								<div>
-									<img src="../assets/bg/dianli.svg" class="icon" />
-								</div>
-								<span class="time">使用第一人称控制器查看园区</span>
-							</h1>
-						</li>
-					</ul>
+				<div class="cityEvent">
+					<h1 @click="flatFlight">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>展开飞机</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h1 @click="recoverFlight">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>恢复飞机</span>
+					</h1>
+					<div class="footerBorder"></div>
 				</div>
 			</div>
 		</div>
@@ -77,16 +64,31 @@ const props = withDefaults(
 		title: '智慧管理系统',
 	}
 );
-
-const toggleAction = (i: number) => {
-	eventHub.emit('actionClick', i);
+const showWall = () => {
+	eventHub.emit('showWall');
 };
-const toggleCamera = (name: string) => {
-	eventHub.emit('toggleCamera', name);
+const showFloor1 = () => {
+	eventHub.emit('showFloor1');
+};
+const showFloor2 = () => {
+	eventHub.emit('showFloor2');
+};
+let open = false;
+const showAll = () => {
+	if (open) {
+		eventHub.emit('showAll');
+		open = false;
+	} else {
+		eventHub.emit('hideAll');
+		open = true;
+	}
 };
 
-const toggleControls = (type: string) => {
-	eventHub.emit('toggleControls', type);
+const flatFlight = () => {
+	eventHub.emit('flatFlight');
+};
+const recoverFlight = () => {
+	eventHub.emit('recoverFlight');
 };
 </script>
 
@@ -230,6 +232,7 @@ h1 {
 	padding: 0 0.3rem 0.3rem;
 	justify-content: space-between;
 	font-size: 0.3rem;
+	text-shadow: 0 0 5px #000;
 }
 h3 {
 	color: #fff;

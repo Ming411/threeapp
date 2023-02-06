@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Scene></Scene>
-		<!-- <big-screen /> -->
+		<big-screen />
 	</div>
 </template>
 
