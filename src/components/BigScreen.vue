@@ -47,6 +47,27 @@
 					</h1>
 					<div class="footerBorder"></div>
 				</div>
+				<div class="cityEvent">
+					<h1 @click="pointsFighter">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>粒子特效</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h1 @click="pointsBlast">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>粒子爆炸</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
+				<div class="cityEvent">
+					<h1 @click="pointsBack">
+						<img src="../assets/bg/bar.svg" class="icon" />
+						<span>粒子复原</span>
+					</h1>
+					<div class="footerBorder"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -89,6 +110,16 @@ const flatFlight = () => {
 };
 const recoverFlight = () => {
 	eventHub.emit('recoverFlight');
+};
+
+const pointsFighter = () => {
+	eventHub.emit('pointsFighter');
+};
+const pointsBlast = () => {
+	eventHub.emit('pointsBlast');
+};
+const pointsBack = () => {
+	eventHub.emit('pointsBack');
 };
 </script>
 

@@ -1,6 +1,5 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
-import type { Group, Scene, Vector3 } from 'three';
+import { Group, Vector3 } from 'three';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import * as THREE from 'three';
@@ -9,6 +8,8 @@ import type { Object3D, AnimationMixer, AnimationClip, AnimationAction, CatmullR
 import scene from '../scene';
 import eventHub from '@/utils/eventHub';
 import cameraModule from '../camera';
+import fragmentShader from '@/shader/flight/fragmentShader.glsl';
+import vertexShader from '@/shader/flight/vertexShader.glsl';
 export default class City {
 	mixer?: AnimationMixer;
 	clip?: AnimationClip;
@@ -75,11 +76,13 @@ export default class City {
 			scene.add(gltf.scene);
 			this.flightGroup.visible = false;
 			this.flightGroup.position.set(3, 42, 68);
+
 			gltf.scene.traverse((child: any) => {
 				if (child.isMesh) {
 					child.material.emissiveIntensity = 15; // 提升飞机亮度
 				}
 			});
+
 			const mouse = new THREE.Vector2();
 			const raycaster = new THREE.Raycaster();
 			// 飞机的点击事件
@@ -100,7 +103,7 @@ export default class City {
 				}
 			});
 
-			this.createPoints(this.flightGroup);
+			// this.createPoints(this.flightGroup);
 		});
 	}
 	/* 创建标注盒子 */
@@ -234,6 +237,18 @@ export default class City {
 				}
 			});
 		});
+		// 生成粒子模型
+		eventHub.on('pointsFighter', () => {
+			this.createPoints(this.flightGroup!);
+		});
+		// 粒子爆炸
+		eventHub.on('pointsBlast', () => {
+			this.pointBlast();
+		});
+		// // 粒子恢复
+		eventHub.on('pointsBack', () => {
+			this.pointsBack();
+		});
 	}
 	// 通过粒子特效建立一个与飞机模型一样的物体
 	createPoints(object3d: Group) {
@@ -246,19 +261,39 @@ export default class City {
 		// 创建纹理图像
 		const texture = new THREE.TextureLoader().load('./assets/particles/1.png');
 		const group = new THREE.Group();
+		// 不能直接使用traverse来遍历，那样就失去了模型层级
 		function createPoints(object3d: Group, newObject3d: any) {
 			if (object3d.children.length > 0) {
 				object3d.children.forEach((child: any) => {
 					if (child.isMesh) {
 						// 生成随机颜色
 						const color = new THREE.Color(Math.random(), Math.random(), Math.random());
-						const material = new THREE.PointsMaterial({
-							size: 0.1,
-							color,
-							map: texture,
+						// const material = new THREE.PointsMaterial({
+						// 	size: 0.1,
+						// 	color,
+						// 	map: texture,
+						// 	blending: THREE.AdditiveBlending,
+						// 	transparent: true,
+						// 	depthTest: false,
+						// });
+
+						const material = new THREE.ShaderMaterial({
 							blending: THREE.AdditiveBlending,
 							transparent: true,
 							depthTest: false,
+							vertexShader,
+							fragmentShader,
+							uniforms: {
+								uColor: {
+									value: color,
+								},
+								uTexture: {
+									value: texture,
+								},
+								uTime: {
+									value: 0,
+								},
+							},
 						});
 						const points = new THREE.Points(child.geometry, material);
 						points.position.copy(child.position);
@@ -272,5 +307,33 @@ export default class City {
 		}
 		createPoints(object3d, group);
 		return group;
+	}
+
+	pointBlast() {
+		this.flightPointsGroup!.traverse((child: any) => {
+			if (child.isPoints) {
+				const randomPositionArray = new Float32Array(child.geometry.attributes.position.count * 3);
+				for (let i = 0; i < child.geometry.attributes.position.count; i++) {
+					randomPositionArray[i * 3 + 0] = (Math.random() * 2 - 1) * 10;
+					randomPositionArray[i * 3 + 1] = (Math.random() * 2 - 1) * 10;
+					randomPositionArray[i * 3 + 2] = (Math.random() * 2 - 1) * 10;
+				}
+				child.geometry.setAttribute('aPosition', new THREE.BufferAttribute(randomPositionArray, 3));
+				gsap.to(child.material.uniforms.uTime, {
+					value: 10,
+					duration: 10,
+				});
+			}
+		});
+	}
+	pointsBack() {
+		this.flightPointsGroup!.traverse((child: any) => {
+			if (child.isPoints) {
+				gsap.to(child.material.uniforms.uTime, {
+					value: 0,
+					duration: 10,
+				});
+			}
+		});
 	}
 }

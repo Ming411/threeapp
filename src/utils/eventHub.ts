@@ -11,6 +11,9 @@ type Events = {
 	hideAll: any;
 	flatFlight: any;
 	recoverFlight: any;
+	pointsFighter: any;
+	pointsBlast: any;
+	pointsBack: any;
 };
 const eventHub = mitt<Events>();
 export default eventHub;
